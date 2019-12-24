@@ -56,7 +56,7 @@ urlpatterns = [
         contentstore.views.component_handler, name='component_handler'),
     url(r'^xblock/resource/(?P<block_type>[^/]*)/(?P<uri>.*)$',
         openedx.core.djangoapps.common_views.xblock.xblock_resource, name='xblock_resource_url'),
-    url(r'', include('openedx.core.djangoapps.xblock.rest_api.urls', namespace='xblock_api', app_name='xblock_api')),
+    url(r'', include('openedx.core.djangoapps.xblock.rest_api.urls', namespace='xblock_api')),
     url(r'^not_found$', contentstore.views.not_found, name='not_found'),
     url(r'^server_error$', contentstore.views.server_error, name='server_error'),
     url(r'^organizations$', OrganizationListView.as_view(), name='organizations'),
@@ -80,7 +80,7 @@ urlpatterns = [
 
     # For redirecting to help pages.
     url(r'^help_token/', include('help_tokens.urls')),
-    url(r'^api/', include('cms.djangoapps.api.urls', namespace='api', app_name='api')),
+    url(r'^api/', include('cms.djangoapps.api.urls', 'api')),
 
     # restful api
     url(r'^$', contentstore.views.howitworks, name='homepage'),
@@ -217,7 +217,7 @@ if settings.FEATURES.get('ENABLE_SERVICE_STATUS'):
 # changes go through our user portal and follow complexity requirements.
 urlpatterns.append(url(r'^admin/password_change/$', handler404))
 urlpatterns.append(url(r'^admin/auth/user/\d+/password/$', handler404))
-urlpatterns.append(url(r'^admin/', include(admin.site.urls)))
+urlpatterns.append(url(r'^admin/', admin.site.urls))
 
 # enable entrance exams
 if settings.FEATURES.get('ENTRANCE_EXAMS'):
@@ -246,7 +246,7 @@ if settings.FEATURES.get('CERTIFICATES_HTML_VIEW'):
     ]
 
 # Maintenance Dashboard
-urlpatterns.append(url(r'^maintenance/', include('maintenance.urls', namespace='maintenance', app_name='maintenance')))
+urlpatterns.append(url(r'^maintenance/', include('maintenance.urls', namespace='maintenance')))
 
 if settings.DEBUG:
     try:
