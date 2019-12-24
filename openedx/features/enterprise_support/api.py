@@ -374,6 +374,10 @@ def enterprise_customer_from_cache(request=None, uuid=None):
     if not enterprise_customer and request and request.user.is_authenticated:
         enterprise_customer = request.session.get('enterprise_customer')
 
+    # Check if it's cached in the session with the service worker user.
+    if not enterprise_customer and request and request.session.get('enterprise_customer') is not None:
+        enterprise_customer = request.session.get('enterprise_customer')
+
     return enterprise_customer
 
 
@@ -447,7 +451,7 @@ def enterprise_customer_for_request(request):
     Check all the context clues of the request to determine if
     the request being made is tied to a particular EnterpriseCustomer.
     """
-    if 'enterprise_customer' in request.session:
+    if request.session.get('enterprise_customer') is not None:
         return enterprise_customer_from_cache(request=request)
     else:
         enterprise_customer = enterprise_customer_from_api(request)
